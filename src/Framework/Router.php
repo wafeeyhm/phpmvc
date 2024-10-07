@@ -17,6 +17,20 @@ class Router{
 
     public function match(string $path): array|bool{
 
+        $pattern = "#^/(?<controller>[a-z]+)/(?<action>[a-z]+)$#";
+
+        if(preg_match($pattern, $path, $matches)){
+
+            $matches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
+
+            // print_r($matches);
+            // exit("Match");
+
+            return $matches;
+
+        }
+
+        /*
         foreach ($this->routes as $route) {
             # code...
 
@@ -26,6 +40,7 @@ class Router{
             }
 
         }
+        */
 
         return false;
 
