@@ -2,7 +2,14 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-require "src/router.php";
+spl_autoload_register(function(string $class_name){
+    
+    // var_dump($class_name);
+    require "src/$class_name.php";
+
+});
+
+// require "src/router.php";
 
 $router = new Router;
 
@@ -16,17 +23,6 @@ if ($params === false) {
     # code...
     exit("no route found");
 }
-
-// var_dump($params);
-// exit;
-
-// $segments = explode("/", $path);
-
-// print_r($segments);
-// exit;
-
-// $action = $segments[2];
-// $controller = $segments[1];
 
 $action = $params["action"];
 $controller = $params["controller"];
