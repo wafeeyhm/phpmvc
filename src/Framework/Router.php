@@ -68,7 +68,7 @@ class Router{
 
         // echo $pattern, "\n";
 
-        return "#^" . implode("/", $segments) . "$#";
+        return "#^" . implode("/", $segments) . "$#i";
     }
 
 }
