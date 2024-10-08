@@ -17,33 +17,36 @@ class Router{
 
     public function match(string $path): array|bool{
 
-        $pattern = "#^/(?<controller>[a-z]+)/(?<action>[a-z]+)$#";
-
-        if(preg_match($pattern, $path, $matches)){
-
-            $matches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
-
-            // print_r($matches);
-            // exit("Match");
-
-            return $matches;
-
-        }
-
-        /*
         foreach ($this->routes as $route) {
             # code...
 
-            if ($route["path"] === $path) {
-                # code...
-                return $route["params"];
+            $pattern = "#^/(?<controller>[a-z]+)/(?<action>[a-z]+)$#";
+
+            echo $pattern, "\n", $route["path"], "\n";
+
+            $this->getPatternFromRoutePath($route["path"]);
+
+            if(preg_match($pattern, $path, $matches)){
+
+                $matches = array_filter($matches, "is_string", ARRAY_FILTER_USE_KEY);
+
+                return $matches;
+
             }
 
         }
-        */
 
         return false;
 
+    }
+
+    private function getPatternFromRoutePath(string $route_path){
+
+        $route_path = trim($route_path, "/");
+
+        $segments = explode("/", $route_path);
+
+        print_r($segments);
     }
 
 }
