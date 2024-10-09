@@ -27,12 +27,12 @@ class Dispatcher{
 
         $controller_object = new $controller;
 
-        $this->getActionArguments($controller, $action);
+        $this->getActionArguments($controller, $action, $params);
 
         $controller_object->$action($params["id"]);
     }
 
-    private function getActionArguments(string $controller, string $action){
+    private function getActionArguments(string $controller, string $action, array $params){
         
         //reflector
         $method = new ReflectionMethod($controller, $action);
@@ -41,7 +41,7 @@ class Dispatcher{
             # code...
             $name = $parameter->getName();
 
-            echo $name, " ";
+            echo $name, " = ", $params[$name], " ";
         }
 
     }
