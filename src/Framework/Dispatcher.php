@@ -4,11 +4,9 @@ namespace Framework;
 
 class Dispatcher{
 
-    private Router $router;
-
-    public function __construct(Router $router)
+    public function __construct(private Router $router)
     {
-        $this->router = $router;
+        
     }
 
 }
