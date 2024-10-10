@@ -27,12 +27,12 @@ class Dispatcher{
 
         $controller_object = new $controller;
 
-        $this->getActionArguments($controller, $action, $params);
+        $args = $this->getActionArguments($controller, $action, $params);
 
-        $controller_object->$action($params["id"]);
+        $controller_object->$action(...$args);
     }
 
-    private function getActionArguments(string $controller, string $action, array $params){
+    private function getActionArguments(string $controller, string $action, array $params): array{
         
         $args = [];
         
@@ -46,7 +46,9 @@ class Dispatcher{
             $args[$name] = $params[$name];
         }
 
-        print_r($args);
+        // print_r($args);
+
+        return $args;
 
     }
 
