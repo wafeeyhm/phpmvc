@@ -28,7 +28,7 @@ class Dispatcher{
         $controller = $this->getControllerName($params);
 
         //exit the script temporarily to print the value out
-        // exit($action);
+        // exit($controller);
 
         $controller_object = new $controller;
 
@@ -64,6 +64,11 @@ class Dispatcher{
         $controller = str_replace("-", "", ucwords(strtolower($controller), "-"));
 
         $namespace = "App\Controllers";
+
+        if (array_key_exists("namespace", $params)) {
+            # code...
+            $namespace .= "\\" . $params["namespace"];
+        }
 
         return $namespace . "\\" . $controller;
 
