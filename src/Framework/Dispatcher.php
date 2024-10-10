@@ -28,7 +28,7 @@ class Dispatcher{
         $controller = $this->getControllerName($params);
 
         //exit the script temporarily to print the value out
-        exit($controller);
+        exit($action);
 
         $controller_object = new $controller;
 
