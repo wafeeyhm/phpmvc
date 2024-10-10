@@ -34,6 +34,8 @@ class Dispatcher{
 
     private function getActionArguments(string $controller, string $action, array $params){
         
+        $args = [];
+        
         //reflector
         $method = new ReflectionMethod($controller, $action);
 
@@ -41,8 +43,10 @@ class Dispatcher{
             # code...
             $name = $parameter->getName();
 
-            echo $name, " = ", $params[$name], " ";
+            $args[$name] = $params[$name];
         }
+
+        print_r($args);
 
     }
 
