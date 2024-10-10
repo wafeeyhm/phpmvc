@@ -22,8 +22,13 @@ class Dispatcher{
             exit("no route found");
         }
 
-        $action = $params["action"];
-        $controller = "App\Controllers\\" .ucwords($params["controller"]);
+        // $action = $params["action"];
+        $action = $this->getActionName($params);
+        // $controller = "App\Controllers\\" .ucwords($params["controller"]);
+        $controller = $this->getControllerName($params);
+
+        //exit the script temporarily to print the value out
+        exit($controller);
 
         $controller_object = new $controller;
 
@@ -49,6 +54,28 @@ class Dispatcher{
         // print_r($args);
 
         return $args;
+
+    }
+
+    private function getControllerName(array $params): string{
+
+        $controller = $params["controller"];
+
+        $controller = str_replace("-", "", ucwords(strtolower($controller), "-"));
+
+        $namespace = "App\Controllers";
+
+        return $namespace . "\\" . $controller;
+
+    }
+
+    private function getActionName(array $params): string{
+
+        $action = $params["action"];
+
+        $action = lcfirst(str_replace("-", "", ucwords(strtolower($action), "-")));
+
+        return $action;
 
     }
 
