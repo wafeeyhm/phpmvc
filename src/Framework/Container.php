@@ -2,13 +2,14 @@
 
 namespace Framework;
 
+use Closure;
 use ReflectionClass;
 
 class Container
 {
     private array $registry = [];
 
-    public function set(string $name, $value): void
+    public function set(string $name, Closure $value): void
     {
         $this->registry[$name] = $value;
     }
@@ -17,7 +18,7 @@ class Container
     {
         if (array_key_exists($class_name, $this->registry)) {
 
-            return $this->registry[$class_name];
+            return $this->registry[$class_name]();
 
         }
 
