@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+$show_errors = true;
+
+if ($show_errors) {
+    # code...
+    ini_set("display_errors", "1");
+} else {
+    # code...
+    ini_set("display_errors", "0");
+}
+
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 
 if ($path === false) {
