@@ -19,6 +19,12 @@ $router->add("/products", ["controller" => "products", "action" => "index"]);
 $router->add("/", ["controller" => "home", "action" => "index"]);
 $router->add("/{controller}/{action}");
 
-$dispatcher = new Framework\Dispatcher($router);
+$container = new Framework\Container;
+
+$database = new App\Database("127.0.0.1", "product_db", "root", "");
+
+$container->set(App\Database::class, $database);
+
+$dispatcher = new Framework\Dispatcher($router, $container);
 
 $dispatcher->handle($path);
