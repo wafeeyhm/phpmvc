@@ -4,6 +4,7 @@ namespace Framework;
 
 use ReflectionMethod;
 use App\Models\Product;
+use ReflectionClass;
 
 class Dispatcher{
 
@@ -30,6 +31,22 @@ class Dispatcher{
 
         //exit the script temporarily to print the value out
         // exit($controller);
+
+        $reflector = new ReflectionClass($controller);
+
+        $constructor = $reflector->getConstructor();
+
+        if ($constructor !== null) {
+            # code...
+
+            foreach ($constructor->getParameters() as $parameter) {
+                # code...
+                $type = (string) $parameter->getType();
+
+                var_dump($type);
+            }
+
+        }
 
         $controller_object = new $controller(new Viewer, new Product);
 
