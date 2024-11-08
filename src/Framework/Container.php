@@ -4,6 +4,7 @@ namespace Framework;
 
 use Closure;
 use ReflectionClass;
+use ReflectionNamedType;
 
 class Container
 {
@@ -37,6 +38,16 @@ class Container
         foreach ($constructor->getParameters() as $parameter) {
 
             $type = $parameter->getType();
+
+            if ($type === null) {
+                # code...
+                exit("Constructor parameter '{$parameter->getName()}' in the $class_name class has no type of declaration");
+            }
+
+            if ( ! ($type instanceof ReflectionNamedType)) {
+                # code...
+                exit("Constructor parameter '{$parameter->getName()}' in the $class_name class has is an invalid type: '$type' - only single named types supported");
+            }
 
             if ($type->isBuiltin()) {
                 # code...
