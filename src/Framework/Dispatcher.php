@@ -3,6 +3,7 @@
 namespace Framework;
 
 use ReflectionMethod;
+use App\Models\Product;
 
 class Dispatcher{
 
@@ -30,7 +31,7 @@ class Dispatcher{
         //exit the script temporarily to print the value out
         // exit($controller);
 
-        $controller_object = new $controller;
+        $controller_object = new $controller(new Viewer, new Product);
 
         $args = $this->getActionArguments($controller, $action, $params);
 
