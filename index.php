@@ -21,9 +21,9 @@ $router->add("/{controller}/{action}");
 
 $container = new Framework\Container;
 
-$container->set(App\Database::class, function(){
-    return new App\Database("127.0.0.1", "product_db", "root", "");
-});
+// $container->set(App\Database::class, function(){
+//     return new App\Database("127.0.0.1", "product_db", "root", "");
+// });
 
 $dispatcher = new Framework\Dispatcher($router, $container);
 
