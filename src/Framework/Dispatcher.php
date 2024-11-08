@@ -23,33 +23,10 @@ class Dispatcher{
             exit("no route found");
         }
 
-        // $action = $params["action"];
         $action = $this->getActionName($params);
-        // $controller = "App\Controllers\\" .ucwords($params["controller"]);
         $controller = $this->getControllerName($params);
 
-        //exit the script temporarily to print the value out
-        // exit($controller);
-
-        $reflector = new ReflectionClass($controller);
-
-        $constructor = $reflector->getConstructor();
-
-        $dependencies = [];
-
-        if ($constructor !== null) {
-            # code...
-
-            foreach ($constructor->getParameters() as $parameter) {
-                # code...
-                $type = (string) $parameter->getType();
-
-                $dependencies[] = new $type;
-            }
-
-        }
-
-        $controller_object = new $controller(...$dependencies);
+        $controller_object = $this->getObject($controller);
 
         $args = $this->getActionArguments($controller, $action, $params);
 
@@ -101,6 +78,31 @@ class Dispatcher{
 
         return $action;
 
+    }
+
+    private function getObject(string $class_name): object
+    {
+        $reflector = new ReflectionClass($class_name);
+
+        $constructor = $reflector->getConstructor();
+
+        $dependencies = [];
+
+        if ($constructor === null) {
+            # code...
+
+            return new $class_name;
+        
+        }
+
+        foreach ($constructor->getParameters() as $parameter) {
+            # code...
+            $type = (string) $parameter->getType();
+
+            $dependencies[] = $this->getObject($type);
+        }
+
+        return new $class_name(...$dependencies);
     }
 
 }
