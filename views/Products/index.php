@@ -1,11 +1,18 @@
-    <h1>Products</h1>
+<h1>Products</h1>
+<a href="/products/new">New Product</a>
+<table class="table">
+    <thead>
+        <th scope="col">Name</th>
+    </thead>
+    <tbody>
     <?php foreach ($products as $product): ?>
-        <h2>
+        <tr>
+        <td>
             <a href="/products/<?= $product["id"]?>/show">
-                <?= htmlspecialchars($product['name']) ?>
+            <?= htmlspecialchars($product['name']) ?>
             </a>
-        </h2>
+        </td> 
+        </tr>
     <?php endforeach; ?>
-
-</body>
-</html>
+    </tbody>
+</table>
