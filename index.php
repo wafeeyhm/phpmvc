@@ -11,6 +11,10 @@ if ($show_errors) {
     # code...
     ini_set("display_errors", "0");
 
+    ini_set("log_errors", 1);
+
+    // echo ini_get("error_log");
+
     require "views/500.php";
 }
 
