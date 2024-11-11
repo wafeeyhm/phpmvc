@@ -26,6 +26,8 @@ class Products{
         echo $this->viewer->render("Products/index.php", [
             "products" => $products
         ]);
+
+        echo $this->viewer->render("shared/footer.php");
     }
 
     public function show(string $id){
@@ -44,11 +46,24 @@ class Products{
         echo $this->viewer->render("Products/show.php", [
             "product" => $product
         ]);
+
+        echo $this->viewer->render("shared/footer.php");
     }
 
     public function showPage(string $title, string $id, string $page){
 
         echo $title, " ", $id, " ", $page;
 
+    }
+
+    public function new()
+    {
+        echo $this->viewer->render("shared/header.php",[
+            "title" => "New Product"
+        ]);
+
+        echo $this->viewer->render("Products/new.php");
+
+        echo $this->viewer->render("shared/footer.php");
     }
 }

@@ -17,6 +17,8 @@ class Home{
         ]);
         echo $viewer->render("Home/index.php");
 
+        echo $viewer->render("shared/footer.php");
+
     }
 
 }
