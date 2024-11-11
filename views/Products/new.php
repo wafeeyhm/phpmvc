@@ -1,11 +1,11 @@
 <h1>New Product</h1>
-<form action="" method="post">
+<form action="/products/create" method="post">
     
     <label for="name">Name</label>
-    <input type="text" id="name" placeholder="name@example.com">
+    <input type="text" id="name" name="name">
 
     <label for="description">Description</label>
-    <textarea id="description" rows="3"></textarea>
+    <textarea id="description" name="description" rows="3"></textarea>
 
     <button>Save</button>
 </form>
