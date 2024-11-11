@@ -13,6 +13,13 @@ set_error_handler(function(
 
 set_exception_handler(function (Throwable $exception){
 
+    if ($exception instanceof \Framework\Exceptions\PageNotFoundException) {
+        # code...
+        http_response_code(404);
+    } else {
+        http_response_code(500);
+    }
+
     $show_errors = true;
 
     if ($show_errors) {
