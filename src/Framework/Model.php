@@ -12,6 +12,19 @@ abstract class Model
 
     protected $table;
 
+    private function getTable(): string
+    {
+
+        if ($this->table !== null) {
+            # code...
+            return $this->table;
+        }
+
+        $parts = explode("\\", $this::class);
+
+        return strtolower(array_pop($parts));
+    }
+
     public function __construct(private Database $database)
     {
         
@@ -21,7 +34,7 @@ abstract class Model
     {
         $pdo = $this->database->getConnection();
 
-        $sql = "SELECT * FROM {$this->table}";
+        $sql = "SELECT * FROM {$this->getTable()}";
 
         $stmt = $pdo->query($sql);
 
@@ -32,7 +45,7 @@ abstract class Model
     {
         $conn = $this->database->getConnection();
 
-        $sql = "SELECT * FROM {$this->table} where id = :id";
+        $sql = "SELECT * FROM {$this->getTable()} where id = :id";
 
         $stmt = $conn->prepare($sql);
 
