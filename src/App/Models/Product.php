@@ -11,26 +11,12 @@ class Product extends Model
 
     // protected $table = "products";
 
-    protected array $errors = [];
-
-    protected function addError(string $field, string $message): void
-    {
-        $this->errors[$field] = $message;
-    }
-
-    protected function validate(array $data): bool
+    protected function validate(array $data): void
     {
         if (empty($data["name"])) {
             # code...
             $this->addError("name", "Name is required");
         }
-
-        return empty($this->errors);
-    }
-
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 
 }
