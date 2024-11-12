@@ -56,6 +56,8 @@ abstract class Model
         
     }
 
+    //find all record
+
     public function findAll(): array
     {
         $pdo = $this->database->getConnection();
@@ -66,6 +68,8 @@ abstract class Model
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    //find a specific record
 
     public function find(string $id): array|bool
     {
@@ -81,6 +85,8 @@ abstract class Model
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    //insert record
 
     public function insert(array $data): bool
     {
@@ -118,5 +124,19 @@ abstract class Model
         }
 
         return $stmt->execute();
+    }
+
+    //update record
+
+    public function update(string $id, array $data): bool
+    {
+        $this->validate($data);
+
+        if (! empty($this->errors)) {
+            # code...
+            return false;
+        }
+
+        return true;
     }
 }

@@ -113,4 +113,40 @@ class Products{
 
         echo $this->viewer->render("shared/footer.php");
     }
+
+    public function update(string $id)
+    {
+
+        $product = $this->model->find($id);
+
+        if ($product === false) {
+            # code...
+            throw new PageNotFoundException("Product not found");
+        }
+
+        $data = [
+            "name" => $_POST["name"],
+            "description" => empty($_POST["description"]) ? null : $_POST["description"],
+        ];
+
+        if($this->model->update($id, $data)){
+
+            header("Location: /products/{$id}/show");
+            exit;
+
+        } else {
+
+            echo $this->viewer->render("shared/header.php",[
+                "title" => "Edit Product"
+            ]);
+    
+            echo $this->viewer->render("Products/edit.php",[
+                "errors" => $this->model->getErrors(),
+                "product" => $product
+            ]);
+    
+            echo $this->viewer->render("shared/footer.php");
+
+        }
+    }
 }
