@@ -76,7 +76,7 @@ class Products{
 
         if($this->model->insert($data)){
 
-            echo "record saved.";
+            echo "record saved. ID: ", $this->model->getInsertID();
 
         } else {
 
