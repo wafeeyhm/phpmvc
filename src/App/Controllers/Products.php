@@ -151,15 +151,6 @@ class Products{
     {
         $product = $this->getProduct($id);
 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-            $this->model->delete($id);
-
-            header("Location: /products/index");
-            exit;
-
-        }
-
         echo $this->viewer->render("shared/header.php",[
             "title" => "Delete Product"
         ]);
@@ -169,6 +160,16 @@ class Products{
         ]);
 
         echo $this->viewer->render("shared/footer.php");
+    }
+
+    public function destroy(string $id)
+    {
+        $product = $this->getProduct($id);
+
+        $this->model->delete($id);
+
+        header("Location: /products/index");
+        exit;
     }
 
 }
