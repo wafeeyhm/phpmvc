@@ -51,7 +51,7 @@ abstract class Model
         return strtolower(array_pop($parts));
     }
 
-    public function __construct(private Database $database)
+    public function __construct(protected Database $database)
     {
         
     }
@@ -187,7 +187,7 @@ abstract class Model
         $stmt = $conn->prepare($sql);
 
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
+
         return $stmt->execute();
     }
 }
