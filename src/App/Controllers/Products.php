@@ -15,6 +15,18 @@ class Products{
         
     }
 
+    private function getProduct(string $id): array
+    {
+        $product = $this->model->find($id);
+
+        if ($product === false) {
+            # code...
+            throw new PageNotFoundException("Product not found");
+        }
+
+        return $product;
+    }
+
     public function index(){
 
         $products = $this->model->findAll();
@@ -134,15 +146,19 @@ class Products{
         }
     }
 
-    private function getProduct(string $id): array
+    public function delete(string $id)
     {
-        $product = $this->model->find($id);
+        $product = $this->getProduct($id);
 
-        if ($product === false) {
-            # code...
-            throw new PageNotFoundException("Product not found");
-        }
+        echo $this->viewer->render("shared/header.php",[
+            "title" => "Delete Product"
+        ]);
 
-        return $product;
+        echo $this->viewer->render("Products/delete.php", [
+            "product" => $product
+        ]);
+
+        echo $this->viewer->render("shared/footer.php");
     }
+
 }
