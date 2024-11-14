@@ -28,6 +28,7 @@ class Dispatcher
         }
 
         $action = $this->getActionName($params);
+        
         $controller = $this->getControllerName($params);
 
         $controller_object = $this->container->get($controller);
