@@ -11,7 +11,8 @@ use UnexpectedValueException;
 class Dispatcher
 {
     public function __construct(private Router $router,
-                                private Container $container)
+                                private Container $container,
+                                private array $middleware_classes)
     {
     }
 
@@ -42,7 +43,37 @@ class Dispatcher
                                                            $action,
                                                            $args);
 
-        return $controller_handler->handle($request);
+        $middleware = $this->getMiddleware($params);
+
+        $middleware_handler = new MiddlewareRequestHandler($middleware,
+                                                           $controller_handler);
+
+        return $middleware_handler->handle($request);
+    }
+
+    private function getMiddleware(array $params): array
+    {
+        if ( ! array_key_exists("middleware", $params)) {
+
+            return [];
+
+        }
+        
+        $middleware = explode("|", $params["middleware"]);
+
+        array_walk($middleware, function(&$value) {
+
+            if ( ! array_key_exists($value, $this->middleware_classes)) {
+
+                throw new UnexpectedValueException("Middleware '$value' not found in config settings");
+
+            }
+
+            $value = $this->container->get($this->middleware_classes[$value]);
+
+        });
+
+        return $middleware;
     }
 
     private function getActionArguments(string $controller, string $action, array $params): array

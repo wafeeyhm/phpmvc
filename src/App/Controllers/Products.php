@@ -120,13 +120,4 @@ class Products extends Controller
 
         return $this->redirect("/products/index");
     }
-    
-    public function responseCodeExample(): Response
-    {
-        $this->response->setStatusCode(451);
-
-        $this->response->setBody("Unavailable for legal reasons");
-
-        return $this->response;
-    }
 }
