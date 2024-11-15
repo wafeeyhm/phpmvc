@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>An Error Occurred</title>
-    <link href="/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
-    <script src="/bootstrap.js" crossorigin="anonymous"></script>
+    <title>Error</title>
 </head>
 <body>
+
     <h1>An Error Occurred</h1>
+
 </body>
 </html>

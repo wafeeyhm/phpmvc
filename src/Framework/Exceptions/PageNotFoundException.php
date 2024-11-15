@@ -6,5 +6,4 @@ use DomainException;
 
 class PageNotFoundException extends DomainException
 {
-    
 }

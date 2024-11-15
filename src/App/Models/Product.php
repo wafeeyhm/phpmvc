@@ -9,14 +9,14 @@ use PDO;
 
 class Product extends Model
 {
-
     // protected $table = "products";
 
     protected function validate(array $data): void
     {
         if (empty($data["name"])) {
-            # code...
+            
             $this->addError("name", "Name is required");
+
         }
     }
 
@@ -33,5 +33,4 @@ class Product extends Model
 
         return (int) $row["total"];
     }
-
 }

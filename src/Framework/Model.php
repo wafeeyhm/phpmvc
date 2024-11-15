@@ -9,23 +9,65 @@ use App\Database;
 
 abstract class Model
 {
-
     protected $table;
 
     protected array $errors = [];
 
+    public function update(string $id, array $data): bool
+    {
+        $this->validate($data);
+
+        if ( ! empty($this->errors)) {
+            return false;
+        }
+        
+        $sql = "UPDATE {$this->getTable()} ";
+
+        unset($data["id"]);
+
+        $assignments = array_keys($data);
+
+        array_walk($assignments, function (&$value) {
+            $value = "$value = ?";
+        });
+
+        $sql .= " SET " . implode(", ", $assignments);
+
+        $sql .= " WHERE id = ?";
+
+        $conn = $this->database->getConnection();
+
+        $stmt = $conn->prepare($sql);
+
+        $i = 1;
+
+        foreach ($data as $value) {
+
+            $type = match(gettype($value)) {
+                "boolean" => PDO::PARAM_BOOL,
+                "integer" => PDO::PARAM_INT,
+                "NULL" => PDO::PARAM_NULL,
+                default => PDO::PARAM_STR
+            };
+
+            $stmt->bindValue($i++, $value, $type);
+
+        }
+
+        $stmt->bindValue($i, $id, PDO::PARAM_INT);
+
+        return $stmt->execute();        
+    }
+
     protected function validate(array $data): void
     {
-
     }
 
     public function getInsertID(): string
     {
-     
         $conn = $this->database->getConnection();
 
         return $conn->lastInsertId();
-        
     }
 
     protected function addError(string $field, string $message): void
@@ -40,10 +82,10 @@ abstract class Model
 
     private function getTable(): string
     {
-
         if ($this->table !== null) {
-            # code...
+
             return $this->table;
+
         }
 
         $parts = explode("\\", $this::class);
@@ -53,29 +95,27 @@ abstract class Model
 
     public function __construct(protected Database $database)
     {
-        
     }
-
-    //find all record
 
     public function findAll(): array
     {
         $pdo = $this->database->getConnection();
 
-        $sql = "SELECT * FROM {$this->getTable()}";
+        $sql = "SELECT *
+                FROM {$this->getTable()}";
 
         $stmt = $pdo->query($sql);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //find a specific record
-
     public function find(string $id): array|bool
     {
         $conn = $this->database->getConnection();
 
-        $sql = "SELECT * FROM {$this->getTable()} where id = :id";
+        $sql = "SELECT *
+                FROM {$this->getTable()}
+                WHERE id = :id";
 
         $stmt = $conn->prepare($sql);
 
@@ -86,23 +126,19 @@ abstract class Model
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    //insert record
-
     public function insert(array $data): bool
     {
-
         $this->validate($data);
 
-        if (! empty($this->errors)) {
-            # code...
+        if ( ! empty($this->errors)) {
             return false;
         }
 
-        $columns = implode(",", array_keys($data));
+        $columns = implode(", ", array_keys($data));
+        $placeholders = implode(", ", array_fill(0, count($data), "?"));
 
-        $placeholder = implode(", ", array_fill(0, count($data), "?"));
-
-        $sql = "INSERT INTO {$this->getTable()} ($columns) VALUES ($placeholder)";
+        $sql = "INSERT INTO {$this->getTable()} ($columns)
+                VALUES ($placeholders)";
 
         $conn = $this->database->getConnection();
 
@@ -111,9 +147,8 @@ abstract class Model
         $i = 1;
 
         foreach ($data as $value) {
-            # code...
 
-            $type = match(gettype($value)){
+            $type = match(gettype($value)) {
                 "boolean" => PDO::PARAM_BOOL,
                 "integer" => PDO::PARAM_INT,
                 "NULL" => PDO::PARAM_NULL,
@@ -121,72 +156,22 @@ abstract class Model
             };
 
             $stmt->bindValue($i++, $value, $type);
+
         }
 
         return $stmt->execute();
     }
-
-    //update record
-
-    public function update(string $id, array $data): bool
-    {
-        $this->validate($data);
-
-        if (! empty($this->errors)) {
-            # code...
-            return false;
-        }
-
-        $sql = "UPDATE {$this->getTable()} ";
-
-        unset($data["id"]);
-
-        $assignments = array_keys($data);
-
-        array_walk($assignments, function(&$value) {
-            $value = "$value = ?";
-        });
-
-        $sql .= " SET " . implode(", " , $assignments);
-
-        $sql .= " WHERE id = ?";
-        
-        $conn = $this->database->getConnection();
-
-        $stmt = $conn->prepare($sql);
-
-        $i = 1;
-
-        foreach ($data as $value) {
-            # code...
-
-            $type = match(gettype($value)){
-                "boolean" => PDO::PARAM_BOOL,
-                "integer" => PDO::PARAM_INT,
-                "NULL" => PDO::PARAM_NULL,
-                default => PDO::PARAM_STR
-            };
-
-            $stmt->bindValue($i++, $value, $type);
-        }
-
-        $stmt->bindValue($i, $id, PDO::PARAM_INT);
-
-        return $stmt->execute();
-
-    }
-
-    //Delete record
 
     public function delete(string $id): bool
     {
-        $sql = "DELETE FROM {$this->getTable()} WHERE id = :id";
+        $sql = "DELETE FROM {$this->getTable()}
+                WHERE id = :id";
 
         $conn = $this->database->getConnection();
 
         $stmt = $conn->prepare($sql);
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }

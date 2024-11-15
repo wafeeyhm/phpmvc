@@ -5,23 +5,19 @@
 {% block body %}
 
 <h1>Products</h1>
+
 <a href="/products/new">New Product</a>
+
 <p>Total: {{ total }}</p>
-<table class="table">
-    <thead>
-        <th scope="col">Name</th>
-    </thead>
-    <tbody>
-    {% foreach ($products as $product): %}
-        <tr>
-        <td>
-            <a href="/products/{{ product['id'] }}/show">
+
+{% foreach ($products as $product): %}
+
+    <h2>
+        <a href="/products/{{ product["id"] }}/show">
             {{ product["name"] }}
-            </a>
-        </td> 
-        </tr>
-    {% endforeach; %}
-    </tbody>
-</table>
+        </a>
+    </h2>
+    
+{% endforeach; %}
 
 {% endblock %}

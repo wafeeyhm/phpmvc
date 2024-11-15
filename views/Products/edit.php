@@ -1,7 +1,12 @@
-<h1>Edit prodoct</h1>
+<h1>Edit Product</h1>
+
+<form method="post" action="/products/<?= $product["id"] ?>/update">
+
+<?php require "form.php" ?>
+
+</form>
 
 <p><a href="/products/<?= $product["id"] ?>/show">Cancel</a></p>
 
-<form action="/products/<?= $product["id"] ?>/update" method="post">
-    <?php require "form.php"; ?>
-</form>
+</body>
+</html>

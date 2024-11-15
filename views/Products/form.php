@@ -6,8 +6,6 @@
 <?php endif; ?>
 
 <label for="description">Description</label>
-<textarea id="description" name="description" rows="3">
-    <?= $product["description"] ?? "" ?>
-</textarea>
+<textarea id="description" name="description"><?= $product["description"] ?? "" ?></textarea>
 
 <button>Save</button>
